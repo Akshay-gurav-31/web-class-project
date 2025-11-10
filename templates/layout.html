@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Music Academy{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
+  <!-- optional Font Awesome:
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  -->
+  <style>
+    .navbar { display:flex; justify-content:space-between; align-items:center; padding:10px 16px; background:#f8f9fa; }
+    .nav-left { display:flex; gap:12px; align-items:center; }
+    .nav-right { display:flex; align-items:center; gap:12px; }
+    .profile { position:relative; }
+    .profile-btn { display:flex; align-items:center; gap:8px; cursor:pointer; border:none; background:transparent; }
+    .profile-img { width:36px; height:36px; border-radius:50%; object-fit:cover; background:#ddd; display:inline-block; text-align:center; line-height:36px; font-weight:600; color:#444; }
+    .profile-menu { display:none; position:absolute; right:0; top:46px; background:white; border:1px solid #e0e0e0; box-shadow:0 6px 18px rgba(0,0,0,0.08); min-width:160px; z-index:50; }
+    .profile-menu a { display:block; padding:8px 12px; color:#333; text-decoration:none; }
+    .profile-menu a:hover { background:#f4f4f4; }
+    .profile:hover .profile-menu { display:block; }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-left">
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('enroll') }}">Enroll</a>
+      <!-- add other nav links -->
+    </div>
+
+    <div class="nav-right">
+      {% if current_user %}
+        <div class="profile">
+          <button class="profile-btn" aria-haspopup="true" aria-expanded="false">
+            {# If you have an avatar URL saved, use it: current_user.avatar_url #}
+            {% if current_user.avatar_url %}
+              <img src="{{ current_user.avatar_url }}" alt="Profile" class="profile-img">
+            {% else %}
+              {# Fallback: show initials #}
+              {% set parts = (current_user.name or '').split() %}
+              {% set initials = (parts[0][0] if parts|length > 0 else '') + (parts[1][0] if parts|length > 1 else '') %}
+              <span class="profile-img">{{ initials|upper }}</span>
+            {% endif %}
+            <span style="margin-left:6px;">{{ current_user.name.split(' ')[0] }}</span>
+          </button>
+
+          <div class="profile-menu" role="menu">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('certificate_index') }}">Certificates</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+          </div>
+        </div>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('signup') }}">Signup</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

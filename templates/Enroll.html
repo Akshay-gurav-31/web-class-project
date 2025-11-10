@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enroll - RD Gurav Music Academy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --primary-dark: #1e3a8a;
+      --secondary: #f59e0b;
+      --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.15);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    
+    .header-banner {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeInDown 0.8s ease;
+    }
+    
+    .header-banner h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      background: var(--bg-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+    
+    .header-banner p {
+      font-size: 1.1rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+    
+    .enroll-container {
+      max-width: 1000px;
+      background: #ffffff;
+      margin: auto;
+      padding: 50px;
+      border-radius: 24px;
+      box-shadow: var(--shadow-lg);
+      animation: fadeInUp 0.8s ease;
+    }
+    
+
+    
+    .form-section {
+      margin-bottom: 35px;
+    }
+    
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .section-title i {
+      color: var(--primary-light);
+    }
+    
+    label {
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 8px;
+      display: block;
+    }
+    
+    .form-control, .form-select {
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+      padding: 12px 16px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+      outline: none;
+    }
+    
+    .input-group-icon {
+      position: relative;
+    }
+    
+    .input-group-icon i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      pointer-events: none;
+    }
+    
+    .input-group-icon .form-control {
+      padding-left: 45px;
+    }
+    
+    .note {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .note i {
+      color: var(--secondary);
+    }
+    
+    .course-card {
+      border: 3px solid transparent;
+      border-radius: 16px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: #f8fafc;
+      margin-bottom: 15px;
+    }
+    
+    .course-card:hover {
+      border-color: var(--primary-light);
+      background: #eff6ff;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .course-card.selected {
+      border-color: var(--primary);
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    }
+    
+    .course-card-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 12px;
+    }
+    
+    .course-icon {
+      font-size: 2.5rem;
+    }
+    
+    .course-card h5 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0;
+    }
+    
+    .course-card p {
+      color: #64748b;
+      margin: 0 0 12px 0;
+      font-size: 0.95rem;
+    }
+    
+    .course-price {
+      display: inline-block;
+      background: var(--bg-gradient);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    
+    .course-details {
+      margin-top: 35px;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-radius: 16px;
+      padding: 30px;
+      border: 2px solid #bae6fd;
+      animation: slideIn 0.5s ease;
+    }
+    
+    .payment-plan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .payment-month {
+      background: white;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+    }
+    
+    .payment-month:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .payment-month-label {
+      font-size: 0.9rem;
+      color: #64748b;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .payment-amount {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    
+    .qr-section {
+      text-align: center;
+      margin-top: 40px;
+      padding: 35px;
+      background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);
+      border-radius: 16px;
+      border: 2px dashed var(--secondary);
+    }
+    
+    .qr-section h5 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 10px;
+    }
+    
+    .qr-section p {
+      color: #78350f;
+      margin-bottom: 20px;
+    }
+    
+    .qr-code-wrapper {
+      display: inline-block;
+      padding: 20px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+      margin: 20px 0;
+    }
+    
+    .qr-section img {
+      max-width: 220px;
+      border-radius: 12px;
+      display: block;
+    }
+    
+    .upload-area {
+      border: 3px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: white;
+      margin-top: 25px;
+    }
+    
+    .upload-area:hover {
+      border-color: var(--primary-light);
+      background: #f8fafc;
+    }
+    
+    .upload-area.dragover {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    
+    .upload-icon {
+      font-size: 3rem;
+      color: #94a3b8;
+      margin-bottom: 15px;
+    }
+    
+    .file-input-label {
+      display: block;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+    }
+    
+    #screenshot {
+      display: none;
+    }
+    
+    .file-preview {
+      margin-top: 15px;
+      display: none;
+    }
+    
+    .file-preview img {
+      max-width: 200px;
+      border-radius: 8px;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .btn-submit {
+      width: 100%;
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding: 16px;
+      margin-top: 40px;
+      border-radius: 12px;
+      background: var(--bg-gradient);
+      border: none;
+      color: white;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+    
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .header-banner h1 {
+        font-size: 2rem;
+      }
+      
+      .enroll-container {
+        padding: 30px 20px;
+      }
+      
+      .progress-steps {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .progress-steps::before {
+        display: none;
+      }
+      
+      .payment-plan-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-banner">
+    <h1><i class="fas fa-music"></i> RD Gurav Music Academy</h1>
+    <p>Begin Your Musical Journey Today</p>
+  </div>
+
+  <div class="enroll-container">
+    <form id="enrollForm" action="/submit_enroll" method="POST" enctype="multipart/form-data">
+      <div class="form-section">
+        <div class="section-title">
+          <i class="fas fa-user-circle"></i> Personal Information
+        </div>
+        
+        <div class="mb-3">
+          <label for="studentName" class="form-label">Full Name</label>
+          <div class="input-group-icon">
+            <i class="fas fa-user"></i>
+            <input type="text" id="studentName" name="studentName" class="form-control" required placeholder="Enter your full name" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="studentEmail" class="form-label">Email Address</label>
+            <div class="input-group-icon">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="studentEmail" name="studentEmail" class="form-control" required placeholder="your.email@example.com" />
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="studentMobile" class="form-label">Mobile Number</label>
+            <div class="input-group-icon">
+              <i class="fas fa-phone"></i>
+              <input type="tel" id="studentMobile" name="studentMobile" class="form-control" required placeholder="9876543210" pattern="[0-9]{10}" />
+            </div>
+            <div class="note"><i class="fas fa-info-circle"></i> Enter 10-digit mobile number</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="studentAddress" class="form-label">Address</label>
+          <textarea id="studentAddress" name="studentAddress" class="form-control" rows="3" required placeholder="Enter your complete address"></textarea>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-title">
+          <i class="fas fa-guitar"></i> Select Your Course
+        </div>
+        
+        <input type="hidden" id="courseSelect" name="course" required />
+        
+        <div class="course-card" data-course="piano">
+          <div class="course-card-header">
+            <div class="course-icon">🎹</div>
+            <div>
+              <h5>Piano Course</h5>
+            </div>
+          </div>
+          <p>Master Classical, Bollywood, and Contemporary piano styles with hands-on training and expert guidance.</p>
+          <span class="course-price">₹6,000 / 6 months</span>
+        </div>
+
+        <div class="course-card" data-course="guitar">
+          <div class="course-card-header">
+            <div class="course-icon">🎸</div>
+            <div>
+              <h5>Guitar Course</h5>
+            </div>
+          </div>
+          <p>Master Acoustic and Electric guitar techniques including chords, scales, and solos for all skill levels.</p>
+          <span class="course-price">₹7,000 / 6 months</span>
+        </div>
+      </div>
+
+      <div class="course-card" data-course="ukulele">
+  <div class="course-card-header">
+    <div class="course-icon">🎶</div>
+    <div>
+      <h5>Ukulele Course</h5>
+    </div>
+  </div>
+  <p>Learn fun strumming patterns, chords, and popular songs on the ukulele in a friendly environment suitable for all ages.</p>
+  <span class="course-price">₹5,000 / 6 months</span>
+</div>
+
+<div class="course-card" data-course="electric-guitar">
+  <div class="course-card-header">
+    <div class="course-icon">⚡</div>
+    <div>
+      <h5>Electric Guitar Course</h5>
+    </div>
+  </div>
+  <p>Master electric guitar solos, riffs, and advanced techniques including tapping, bending, and improvisation for all levels.</p>
+  <span class="course-price">₹8,000 / 6 months</span>
+</div>
+
+
+      <div id="courseDetails" class="course-details" style="display:none;">
+        <h4 style="color: #0c4a6e; margin-bottom: 20px; font-weight: 800;"><i class="fas fa-info-circle"></i> Course Details</h4>
+        <h5 style="color: #475569; margin-bottom: 15px; font-weight: 700;">Monthly Payment Plan</h5>
+        <div id="paymentPlanGrid" class="payment-plan-grid"></div>
+      </div>
+
+      <div class="qr-section">
+        <h5><i class="fas fa-qrcode"></i> Complete Your Payment</h5>
+        <p>Scan the QR code below using any UPI app to make the payment</p>
+        <div class="qr-code-wrapper">
+          <img src="../static/images/payment.jpg" alt="Payment QR Code" />
+        </div>
+        
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+          <label for="screenshot" class="file-input-label">
+            <strong>Click to upload</strong> or drag and drop<br>
+            <span style="font-size: 0.9rem; color: #64748b;">Payment screenshot (PNG, JPG, JPEG)</span>
+          </label>
+          <input type="file" id="screenshot" name="screenshot" accept="image/*" required />
+          <div class="file-preview" id="filePreview">
+            <img id="previewImg" src="" alt="Preview" />
+            <p id="fileName" style="margin-top: 10px; font-weight: 600; color: #475569;"></p>
+          </div>
+        </div>
+        <div class="note" style="justify-content: center; margin-top: 15px;">
+          <i class="fas fa-shield-alt"></i> Your payment information is secure and encrypted
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-submit">
+        <i class="fas fa-check-circle"></i> Complete Enrollment
+      </button>
+    </form>
+  </div>
+
+  <script>
+    const courseData = {
+      piano: {
+        paymentPlan: [
+          { month: "Month 1", amount: "₹1,000" },
+          { month: "Month 2", amount: "₹1,000" },
+          { month: "Month 3", amount: "₹1,000" },
+          { month: "Month 4", amount: "₹1,000" },
+          { month: "Month 5", amount: "₹1,000" },
+          { month: "Month 6", amount: "₹1,000" }
+        ]
+      },
+      guitar: {
+        paymentPlan: [
+          { month: "Month 1", amount: "₹1,200" },
+          { month: "Month 2", amount: "₹1,200" },
+          { month: "Month 3", amount: "₹1,200" },
+          { month: "Month 4", amount: "₹1,200" },
+          { month: "Month 5", amount: "₹1,200" },
+          { month: "Month 6", amount: "₹1,000" }
+        ]
+      }
+    };
+
+    const courseCards = document.querySelectorAll('.course-card');
+    const courseSelect = document.getElementById('courseSelect');
+    const courseDetails = document.getElementById('courseDetails');
+    const paymentPlanGrid = document.getElementById('paymentPlanGrid');
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('screenshot');
+    const filePreview = document.getElementById('filePreview');
+    const previewImg = document.getElementById('previewImg');
+    const fileName = document.getElementById('fileName');
+
+    courseCards.forEach(card => {
+      card.addEventListener('click', () => {
+        courseCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        
+        const course = card.dataset.course;
+        courseSelect.value = course;
+        
+        const data = courseData[course];
+        paymentPlanGrid.innerHTML = '';
+        data.paymentPlan.forEach(({ month, amount }) => {
+          const div = document.createElement('div');
+          div.className = 'payment-month';
+          div.innerHTML = `
+            <div class="payment-month-label">${month}</div>
+            <div class="payment-amount">${amount}</div>
+          `;
+          paymentPlanGrid.appendChild(div);
+        });
+        
+        courseDetails.style.display = 'block';
+      });
+    });
+
+    uploadArea.addEventListener('click', () => fileInput.click());
+
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files.length) {
+        fileInput.files = files;
+        handleFileSelect(files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length) {
+        handleFileSelect(e.target.files[0]);
+      }
+    });
+
+    function handleFileSelect(file) {
+      fileName.textContent = file.name;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewImg.src = e.target.result;
+        filePreview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById('enrollForm').addEventListener('submit', (e) => {
+      if (!courseSelect.value) {
+        e.preventDefault();
+        alert('Please select a course before submitting.');
+      }
+    });
+  </script>
+</body>
+</html>

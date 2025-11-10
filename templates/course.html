@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Classes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background: #f3f4f6; }
+    .sidebar { height: 100vh; overflow-y: auto; position: sticky; top: 0; }
+    .video-item { cursor: pointer; transition: all 0.2s ease; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 0.5rem; background-color: #f9fafb; }
+    .video-item:hover:not(.locked) { background-color: #e5e7eb; transform: translateX(4px); }
+    .locked { opacity: 0.6; cursor: not-allowed; background-color: #e5e7eb !important; }
+    .progress { height: 1rem; border-radius: 9999px; }
+    .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem; }
+    .video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 0.5rem; }
+    .bg-green-light { background-color: #d1fae5 !important; }
+    a.disabled-link { pointer-events: none; opacity: 0.5; }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row min-vh-100">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-12 bg-white sidebar p-3 shadow-sm">
+      <h2 class="fw-bold mb-4">Course Syllabus</h2>
+      <ul class="list-unstyled" id="videoList">
+        <li class="video-item" data-index="0">Introduction to Music Theory</li>
+        <li class="video-item locked" data-index="1">Basic Guitar Chords</li>
+        <li class="video-item locked" data-index="2">Rhythm and Timing</li>
+      </ul>
+
+      <!-- Certificate button -->
+      <div class="mt-4">
+        <a id="certButton" href="{{ url_for('certificate_index') }}" class="btn btn-primary disabled-link w-100">Download Certificate</a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 col-12 p-4">
+      <h1 class="display-5 fw-bold mb-4">Music Classes Playlist</h1>
+      <div id="videoPlayer" class="video-container">
+        <video id="player" controls></video>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 fw-semibold mb-3">Course Progress</h2>
+          <div class="progress mb-2">
+            <div id="progressBar" class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+          </div>
+          <p id="progressText" class="mb-0 text-muted">0% Complete</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const videos = [
+    { title: "Introduction to Music Theory", src: "{{ url_for('static', filename='videos/intro.mp4') }}", watched: false },
+    { title: "Basic Guitar Chords", src: "{{ url_for('static', filename='videos/guitar.mp4') }}", watched: false },
+    { title: "Rhythm and Timing", src: "{{ url_for('static', filename='videos/rhythm.mp4') }}", watched: false }
+  ];
+
+  const player = document.getElementById('player');
+  const videoItems = document.querySelectorAll('.video-item');
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  const certButton = document.getElementById('certButton');
+  const watchedVideos = JSON.parse(localStorage.getItem('watchedVideos')) || [];
+
+  // Restore watched state from localStorage
+  videos.forEach((video) => {
+    if (watchedVideos.includes(video.src)) {
+      video.watched = true;
+    }
+  });
+
+  // Load first video
+  player.src = videos[0].src;
+
+  player.addEventListener('ended', () => {
+    const currentVideo = videos.find(v => player.src.includes(v.src)); // ✅ fixed check
+    if (currentVideo && !currentVideo.watched) {
+      currentVideo.watched = true;
+      watchedVideos.push(currentVideo.src);
+      localStorage.setItem('watchedVideos', JSON.stringify(watchedVideos));
+      updateVideoAccess();
+      updateProgress();
+    }
+  });
+
+  // Handle video selection
+  videoItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      if (item.classList.contains('locked')) return;
+      player.src = videos[index].src;
+      player.play();
+    });
+  });
+
+  function updateVideoAccess() {
+    videoItems.forEach((item, index) => {
+      if (index === 0 || videos[index - 1].watched) {
+        item.classList.remove('locked');
+      } else {
+        item.classList.add('locked');
+      }
+      if (videos[index].watched) {
+        item.classList.add('bg-green-light');
+      }
+    });
+  }
+
+  function updateProgress() {
+    const watchedCount = videos.filter(v => v.watched).length;
+    const progress = (watchedCount / videos.length) * 100;
+    progressBar.style.width = `${progress}%`;
+    progressText.textContent = `${Math.round(progress)}% Complete`;
+
+    if (watchedCount === videos.length) {
+      certButton.classList.remove('disabled-link');
+    } else {
+      certButton.classList.add('disabled-link');
+    }
+  }
+
+  updateVideoAccess();
+  updateProgress();
+</script>
+</body>
+</html>

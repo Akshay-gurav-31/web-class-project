@@ -1,0 +1,8 @@
+Flask
+PyPDF2
+reportlab
+qrcode
+Werkzeug
+Pillow
+gunicorn
+supabase

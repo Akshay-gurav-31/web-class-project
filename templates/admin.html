@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - RD Gurav Music Academy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --primary-dark: #1e3a8a;
+      --secondary: #f59e0b;
+      --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.15);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .dashboard-header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeInDown 0.8s ease;
+    }
+    
+    .dashboard-header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: var(--bg-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+    
+    .dashboard-header p {
+      font-size: 1.1rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+      animation: fadeInUp 0.8s ease;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--bg-gradient);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .stat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      opacity: 0.8;
+    }
+    
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      font-size: 1rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+    
+    .filters-section {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 30px;
+      animation: fadeInUp 0.8s ease 0.1s both;
+    }
+    
+    .filters-section h5 {
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .enrollments-container {
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+    
+    .enrollment-card {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 25px;
+      transition: all 0.3s ease;
+      border-left: 5px solid transparent;
+    }
+    
+    .enrollment-card:hover {
+      transform: translateX(5px);
+      box-shadow: var(--shadow-lg);
+      border-left-color: var(--primary-light);
+    }
+    
+    .enrollment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .student-info h4 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 5px;
+    }
+    
+    .student-info .enrollment-id {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    
+    .course-badge {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .course-badge.piano {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      color: #1e40af;
+    }
+    
+    .course-badge.guitar {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      color: #92400e;
+    }
+    
+    .enrollment-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+    
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .detail-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      color: var(--primary-light);
+    }
+    
+    .detail-content {
+      flex: 1;
+    }
+    
+    .detail-label {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    
+    .detail-value {
+      font-size: 1rem;
+      color: #1e293b;
+      font-weight: 600;
+    }
+    
+    .payment-section {
+      background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);
+      padding: 25px;
+      border-radius: 12px;
+      border: 2px solid #fde68a;
+    }
+    
+    .payment-section h5 {
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .payment-proof {
+      display: flex;
+      gap: 20px;
+      align-items: start;
+      flex-wrap: wrap;
+    }
+    
+    .proof-image-container {
+      flex-shrink: 0;
+    }
+    
+    .proof-image {
+      max-width: 200px;
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .proof-image:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .payment-details {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    .payment-status {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+    
+    .payment-status.verified {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    
+    .payment-status.pending {
+      background: #fed7aa;
+      color: #92400e;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .btn-action {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn-verify {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+    
+    .btn-verify:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+    
+    .btn-reject {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+    }
+    
+    .btn-reject:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    }
+    
+    .btn-download {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+    }
+    
+    .btn-download:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .modal-content {
+      margin: 2% auto;
+      display: block;
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 12px;
+      animation: zoomIn 0.3s ease;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 30px;
+      right: 50px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .close-modal:hover {
+      transform: scale(1.2);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .empty-state i {
+      font-size: 4rem;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+    }
+    
+    .empty-state h3 {
+      color: #64748b;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    
+    .empty-state p {
+      color: #94a3b8;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #64748b;
+    }
+    
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .dashboard-header h1 {
+        font-size: 2rem;
+      }
+      
+      .stats-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .enrollment-header {
+        flex-direction: column;
+      }
+      
+      .enrollment-details {
+        grid-template-columns: 1fr;
+      }
+      
+      .payment-proof {
+        flex-direction: column;
+      }
+      
+      .close-modal {
+        top: 20px;
+        right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-header">
+    <h1><i class="fas fa-music"></i> Admin Dashboard</h1>
+    <p>RD Gurav Music Academy - Enrollment Management</p>
+  </div>
+
+  <div class="stats-container">
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-value" id="totalEnrollments">0</div>
+      <div class="stat-label">Total Enrollments</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">🎹</div>
+      <div class="stat-value" id="pianoCount">0</div>
+      <div class="stat-label">Piano Students</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">🎸</div>
+      <div class="stat-value" id="guitarCount">0</div>
+      <div class="stat-label">Guitar Students</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-value" id="pendingCount">0</div>
+      <div class="stat-label">Pending Verification</div>
+    </div>
+  </div>
+
+  <div class="filters-section">
+    <h5><i class="fas fa-filter"></i> Filters</h5>
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <select class="form-select" id="courseFilter">
+          <option value="all">All Courses</option>
+          <option value="piano">Piano</option>
+          <option value="guitar">Guitar</option>
+          <option value="ukulele">Ukulele</option>
+          <option value="electric_guitar">Electric Guitar</option>
+        </select>
+      </div>
+      <div class="col-md-4 mb-3">
+        <select class="form-select" id="statusFilter">
+          <option value="all">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="verified">Verified</option>
+        </select>
+      </div>
+      <div class="col-md-4 mb-3">
+        <input type="text" class="form-control" id="searchInput" placeholder="Search by name, email, or mobile...">
+      </div>
+    </div>
+  </div>
+
+  <div class="enrollments-container" id="enrollmentsContainer">
+    <div class="loading">
+      <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
+      <p>Loading enrollments...</p>
+    </div>
+  </div>
+
+  <div id="imageModal" class="modal">
+    <span class="close-modal" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+  </div>
+
+  <script>
+    let enrollmentsData = [];
+    let filteredData = [];
+
+    // Fetch enrollments from backend
+    async function fetchEnrollments() {
+      try {
+        const response = await fetch('/api/enrollments');
+        const data = await response.json();
+        enrollmentsData = data;
+        filteredData = [...enrollmentsData];
+        updateStats();
+        renderEnrollments(filteredData);
+      } catch (error) {
+        console.error('Error fetching enrollments:', error);
+        document.getElementById('enrollmentsContainer').innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Error Loading Data</h3>
+            <p>Unable to fetch enrollment data. Please try again later.</p>
+          </div>
+        `;
+      }
+    }
+
+    function updateStats() {
+      document.getElementById('totalEnrollments').textContent = enrollmentsData.length;
+      document.getElementById('pianoCount').textContent = enrollmentsData.filter(e => e.course === 'piano').length;
+      document.getElementById('guitarCount').textContent = enrollmentsData.filter(e => e.course === 'guitar').length;
+      document.getElementById('pendingCount').textContent = enrollmentsData.filter(e => e.paymentStatus === 'pending').length;
+    }
+
+    function renderEnrollments(data) {
+      const container = document.getElementById('enrollmentsContainer');
+      
+      if (data.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-inbox"></i>
+            <h3>No Enrollments Found</h3>
+            <p>No enrollments match your current filters.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = data.map(enrollment => `
+        <div class="enrollment-card">
+          <div class="enrollment-header">
+            <div class="student-info">
+              <h4>${enrollment.studentName}</h4>
+              <div class="enrollment-id">ID: ${enrollment.id}</div>
+            </div>
+            <span class="course-badge ${enrollment.course}">
+              ${enrollment.course === 'piano' ? '🎹' : '🎸'} ${enrollment.course.toUpperCase()}
+            </span>
+          </div>
+          
+          <div class="enrollment-details">
+            <div class="detail-item">
+              <div class="detail-icon"><i class="fas fa-envelope"></i></div>
+              <div class="detail-content">
+                <div class="detail-label">Email</div>
+                <div class="detail-value">${enrollment.studentEmail}</div>
+              </div>
+            </div>
+            
+            <div class="detail-item">
+              <div class="detail-icon"><i class="fas fa-phone"></i></div>
+              <div class="detail-content">
+                <div class="detail-label">Mobile</div>
+                <div class="detail-value">${enrollment.studentMobile}</div>
+              </div>
+            </div>
+            
+            <div class="detail-item">
+              <div class="detail-icon"><i class="fas fa-calendar"></i></div>
+              <div class="detail-content">
+                <div class="detail-label">Enrollment Date</div>
+                <div class="detail-value">${new Date(enrollment.enrollmentDate).toLocaleDateString('en-IN')}</div>
+              </div>
+            </div>
+            
+            <div class="detail-item">
+              <div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div>
+              <div class="detail-content">
+                <div class="detail-label">Address</div>
+                <div class="detail-value">${enrollment.studentAddress}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="payment-section">
+            <h5><i class="fas fa-receipt"></i> Payment Information</h5>
+            <div class="payment-proof">
+              <div class="proof-image-container">
+                <img src="/static/uploads/${enrollment.screenshotFilename}" alt="Payment Proof" class="proof-image" onclick="openModal('/static/uploads/${enrollment.screenshotFilename}')">
+              </div>
+              <div class="payment-details">
+                <span class="payment-status ${enrollment.paymentStatus}">
+                  ${enrollment.paymentStatus === 'verified' ? '✓' : '⏳'} ${enrollment.paymentStatus.toUpperCase()}
+                </span>
+                <div class="action-buttons">
+                  ${enrollment.paymentStatus === 'pending' ? `
+                    <button class="btn-action btn-verify" onclick="verifyPayment('${enrollment.id}')">
+                      <i class="fas fa-check"></i> Verify Payment
+                    </button>
+                    <button class="btn-action btn-reject" onclick="rejectPayment('${enrollment.id}')">
+                      <i class="fas fa-times"></i> Reject
+                    </button>
+                  ` : ''}
+                  <a href="/static/uploads/${enrollment.screenshotFilename}" download="payment_${enrollment.id}.jpg" class="btn-action btn-download">
+                    <i class="fas fa-download"></i> Download
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function applyFilters() {
+      const courseFilter = document.getElementById('courseFilter').value;
+      const statusFilter = document.getElementById('statusFilter').value;
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      
+      filteredData = enrollmentsData.filter(enrollment => {
+        const matchesCourse = courseFilter === 'all' || enrollment.course === courseFilter;
+        const matchesStatus = statusFilter === 'all' || enrollment.paymentStatus === statusFilter;
+        const matchesSearch = enrollment.studentName.toLowerCase().includes(searchTerm) ||
+                            enrollment.studentEmail.toLowerCase().includes(searchTerm) ||
+                            enrollment.studentMobile.includes(searchTerm);
+        
+        return matchesCourse && matchesStatus && matchesSearch;
+      });
+      
+      renderEnrollments(filteredData);
+    }
+
+    function openModal(imageSrc) {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      modal.style.display = 'block';
+      modalImg.src = imageSrc;
+    }
+
+    function closeModal() {
+      document.getElementById('imageModal').style.display = 'none';
+    }
+
+    async function verifyPayment(id) {
+      try {
+        const response = await fetch('/api/verify_payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ id: id })
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+          alert(result.message);
+          fetchEnrollments(); // Refresh data
+        } else {
+          alert('Error verifying payment');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error verifying payment');
+      }
+    }
+
+    async function rejectPayment(id) {
+      const enrollment = enrollmentsData.find(e => e.id === id);
+      if (enrollment && confirm(`Are you sure you want to reject payment for ${enrollment.studentName}?`)) {
+        alert(`Payment rejected for ${enrollment.studentName}. Please contact the student.`);
+      }
+    }
+
+    // Event listeners
+    document.getElementById('courseFilter').addEventListener('change', applyFilters);
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    
+    // Close modal on click outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('imageModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+
+    // Initialize - fetch data when page loads
+    fetchEnrollments();
+  </script>
+
+  <!-- Add this script section at the bottom of your file, before </body> -->
+  <script>
+  // Load enrollments when page loads
+  document.addEventListener('DOMContentLoaded', loadEnrollments);
+
+  function loadEnrollments() {
+      fetch('/api/enrollments')
+          .then(response => response.json())
+          .then(enrollments => {
+              const container = document.getElementById('enrollmentsContainer');
+              if (!enrollments.length) {
+                  container.innerHTML = '<p class="text-muted">No enrollments found.</p>';
+                  return;
+              }
+              
+              container.innerHTML = enrollments.map(enrollment => `
+                  <div class="enrollment-card" id="enrollment-${enrollment.id}">
+                      <div class="enrollment-header">
+                          <div class="student-info">
+                              <h4>${enrollment.studentName}</h4>
+                              <span class="enrollment-id">#${enrollment.id}</span>
+                          </div>
+                          <span class="course-badge ${enrollment.course.toLowerCase()}">${enrollment.course}</span>
+                      </div>
+                      <div class="enrollment-details">
+                          <p>Email: ${enrollment.studentEmail}</p>
+                          <p>Mobile: ${enrollment.studentMobile}</p>
+                          <p>Date: ${new Date(enrollment.enrollmentDate).toLocaleDateString()}</p>
+                          <p>Status: <span class="status-${enrollment.paymentStatus}">${enrollment.paymentStatus}</span></p>
+                      </div>
+                      ${enrollment.paymentStatus === 'pending' ? `
+                          <div class="enrollment-actions">
+                              <button onclick="approveEnrollment('${enrollment.id}')" class="btn btn-success btn-sm">
+                                  <i class="fas fa-check"></i> Approve
+                              </button>
+                              <button onclick="rejectEnrollment('${enrollment.id}')" class="btn btn-danger btn-sm">
+                                  <i class="fas fa-times"></i> Reject
+                              </button>
+                          </div>
+                      ` : ''}
+                      <a href="/static/uploads/${enrollment.screenshotFilename}" target="_blank" class="btn btn-info btn-sm mt-2">
+                          <i class="fas fa-image"></i> View Screenshot
+                      </a>
+                  </div>
+              `).join('');
+          })
+          .catch(error => {
+              console.error('Error loading enrollments:', error);
+              document.getElementById('enrollmentsContainer').innerHTML = 
+                  '<p class="text-danger">Error loading enrollments. Please try again.</p>';
+          });
+  }
+
+  function approveEnrollment(enrollmentId) {
+      if(!confirm('Are you sure you want to approve this enrollment?')) return;
+      
+      fetch(`/api/enrollments/${enrollmentId}/approve`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'}
+      })
+      .then(response => response.json())
+      .then(data => {
+          if(data.error) throw new Error(data.error);
+          // Reload enrollments to show updated status
+          loadEnrollments();
+      })
+      .catch(error => {
+          console.error('Error approving enrollment:', error);
+          alert('Error approving enrollment. Please try again.');
+      });
+  }
+
+  function rejectEnrollment(enrollmentId) {
+      if(!confirm('Are you sure you want to reject this enrollment?')) return;
+      
+      fetch(`/api/enrollments/${enrollmentId}/reject`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'}
+      })
+      .then(response => response.json())
+      .then(data => {
+          if(data.error) throw new Error(data.error);
+          // Reload enrollments to show updated status
+          loadEnrollments();
+      })
+      .catch(error => {
+          console.error('Error rejecting enrollment:', error);
+          alert('Error rejecting enrollment. Please try again.');
+      });
+  }
+  </script>
+</body>
+</html>

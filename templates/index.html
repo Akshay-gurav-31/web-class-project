@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>R.D.GURAV Music Classes - Graded Music Certifications</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
+
+    <style>
+        /* R.D.GURAV Color Scheme */
+        :root {
+            --spardha-green: #008000; /* Main Accent Color */
+            --spardha-green-dark: #006400;
+            --deep-blue: #0d1b2a;
+            --soft-white: #f5f7fa;
+            --dark-gray: #243b55;
+            --font-family: 'Poppins', sans-serif;
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--soft-white);
+            color: var(--deep-blue);
+            scroll-behavior: smooth;
+        }
+
+        /* --- Navbar Styles (Screen 1) --- */
+        .navbar {
+            background-color: white !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 0.75rem 0;
+        }
+        .navbar-brand {
+            color: var(--deep-blue) !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .nav-link {
+            color: var(--dark-gray) !important;
+            font-weight: 500;
+            transition: color var(--transition-speed);
+        }
+        .nav-link:hover {
+            color: var(--spardha-green) !important;
+        }
+        .btn-spardha-login {
+            color: var(--spardha-green);
+            border: 1px solid var(--spardha-green);
+            padding: 0.4rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .btn-spardha-trial {
+            background-color: var(--spardha-green);
+            color: white;
+            padding: 0.4rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        .btn-spardha-trial:hover {
+            background-color: var(--spardha-green-dark);
+        }
+
+        /* --- Hero Section (Screen 1) --- */
+        #hero-spardha {
+            background-color: white; /* Light/White Background */
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+        }
+
+        /* Placeholder Logos - तुम्ही तुमच्या वास्तविक लोगोने बदला */
+        .certification-logos img {
+            height: 30px;
+            margin-right: 15px;
+            opacity: 0.8;
+        }
+
+        #hero-spardha h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            color: var(--deep-blue);
+            margin-top: 1rem;
+            line-height: 1.1;
+        }
+
+        #hero-spardha ul li {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--dark-gray);
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 25px;
+            list-style: none;
+        }
+
+        #hero-spardha ul li::before {
+            content: "\f058"; /* Font Awesome solid check circle */
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            color: var(--spardha-green);
+            position: absolute;
+            left: 0;
+        }
+
+        .review-badge {
+            font-size: 1rem;
+            font-weight: 600;
+            background-color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        .review-badge i {
+            color: gold;
+        }
+
+        .since-tag span {
+            font-weight: 700;
+            color: var(--spardha-green);
+            font-size: 1.2rem;
+        }
+
+        /* --- Why Grades Section (Screen 3) --- */
+        #why-grades {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+        .section-title-spardha {
+            font-weight: 800;
+            color: var(--deep-blue);
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: clamp(2rem, 3vw, 2.75rem);
+        }
+
+        .grade-benefit-card {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            height: 100%;
+            background-color: white;
+            transition: transform 0.3s;
+        }
+        .grade-benefit-card:hover {
+            transform: translateY(-5px);
+        }
+        .grade-benefit-card i {
+            font-size: 2.5rem;
+            color: var(--spardha-green);
+            margin-bottom: 1rem;
+        }
+        .grade-benefit-card p {
+            font-weight: 600;
+            color: var(--deep-blue);
+            margin-bottom: 0;
+        }
+
+        .stats-banner {
+            background-color: var(--deep-blue);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+        .stats-banner h3 {
+            font-weight: 800;
+            margin-bottom: 2rem;
+            font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+        }
+        .stat-item {
+            font-size: 1.2rem;
+        }
+        .stat-item span {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--spardha-green);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- Instructors Section (Screen 4) --- */
+        #instructors {
+            background-color: var(--soft-white);
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+        .instructor-card {
+            text-align: center;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        .instructor-card:hover {
+            transform: translateY(-5px);
+        }
+        /* Trainer Image Style */
+        .instructor-card img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--spardha-green);
+            margin-bottom: 1rem;
+        }
+        .instructor-card h5 {
+            font-weight: 700;
+            color: var(--deep-blue);
+        }
+        .instructor-card p {
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+        }
+        .instructor-card .badge {
+            background-color: var(--spardha-green);
+            color: white;
+            font-weight: 500;
+        }
+
+        /* --- Courses Section (Screen 5/6) --- */
+
+
+        #our-courses {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+            background-color: white;
+        }
+
+        .course-tabs .btn {
+            font-weight: 600;
+            margin-right: 15px;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .course-tabs .btn-outline-dark {
+            color: var(--dark-gray);
+            border-color: var(--dark-gray);
+        }
+
+        .course-tabs .btn-outline-dark:hover,
+        .course-tabs .btn.active {
+            background-color: var(--spardha-green);
+            border-color: var(--spardha-green);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 128, 0, 0.4);
+        }
+
+        .course-content-box {
+            background-color: var(--soft-white);
+            padding: 3rem;
+            border-radius: var(--border-radius);
+        }
+        .course-content-box h3 {
+            font-weight: 800;
+            color: var(--spardha-green-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .course-instruments-list img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid var(--spardha-green);
+            padding: 4px;
+        }
+        .course-main-image img {
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+
+        /* --- Footer Styles --- */
+        footer {
+            background-color: var(--deep-blue);
+            color: var(--soft-white);
+            padding: 2rem 0;
+            text-align: center;
+        }
+        footer a {
+            color: var(--soft-white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        footer a:hover {
+            color: var(--spardha-green);
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 991px) {
+            .hero-image {
+                margin-top: 2rem;
+                text-align: center;
+            }
+        }
+        @media (max-width: 767px) {
+            .hero-footer-info {
+                justify-content: center;
+            }
+            .course-content-box {
+                padding: 1.5rem;
+            }
+        }
+
+
+        /* 🌟 Hero Section */
+#hero {
+  height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
+              url("https://images.unsplash.com/photo-1511379938547-c1f69419868d") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+
+/* Container content styling */
+#hero .content {
+  max-width: 700px;
+  padding: 20px;
+}
+
+/* Headline styling */
+#hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  color: #00ffff;
+  animation: fadeInDown 1s ease-in-out;
+}
+
+/* Paragraph styling */
+#hero p {
+  font-size: 1.2rem;
+  color: #f0f0f0;
+  margin-bottom: 30px;
+  animation: fadeInUp 1.2s ease-in-out;
+}
+
+/* Enroll button styling */
+#hero #enrollBtn {
+  background-color: #00ffff;
+  border: none;
+  color: #000;
+  font-weight: 600;
+  padding: 12px 30px;
+  border-radius: 30px;
+  transition: 0.3s;
+  animation: fadeInUp 1.5s ease-in-out;
+}
+
+#hero #enrollBtn:hover {
+  background-color: #00cccc;
+  transform: scale(1.05);
+}
+
+/* 🎬 Simple fade-in animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 768px) {
+  #hero h1 {
+    font-size: 2rem;
+  }
+  #hero p {
+    font-size: 1rem;
+  }
+}
+
+/* Gallery Section */
+#gallery {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+#galleryCarousel {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+#galleryCarousel .carousel-item img {
+    height: 500px;
+    object-fit: cover;
+}
+
+#videos {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+#videos iframe {
+    width: 100%;
+    height: 315px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Our Courses Section Styles */
+#our-courses { background: #fafafa; }
+
+.instrument-tabs button {
+  border-radius: 50px;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+  margin: 5px;
+}
+
+.instrument-tabs button.active {
+  background-color: #0d6efd;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+.instrument-tabs button:hover {
+  transform: translateY(-2px);
+}
+
+.course-content-box img {
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.course-content-box img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.transition-all { transition: all 0.4s ease-in-out; }
+
+        /* Profile widget styles (minimal, integrated) */
+        .profile-widget { position: relative; display:flex; align-items:center; gap:8px; }
+        .profile-circle {
+            width:40px; height:40px; border-radius:50%; background:#2d6cdf; color:#fff;
+            display:flex; align-items:center; justify-content:center; font-weight:700; cursor:pointer;
+            border: none;
+        }
+        .profile-dropdown {
+            position: absolute;
+            right: 0;
+            top: 48px;
+            min-width: 260px;            /* increased width */
+            max-width: 320px;
+            background: #fff;
+            border: 1px solid #e6e6e6;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            padding: 14px;              /* increased padding */
+            border-radius: 8px;         /* slightly larger radius */
+            z-index: 2000;
+            display: none;
+            font-size: 15px;
+        }
+        .profile-dropdown.show { display:block; }
+        .pd-name { font-weight:700; color:#111; font-size:16px; }
+        .pd-email { font-size:14px; color:#666; margin-bottom:10px; }
+        .pd-actions { display:flex; gap:8px; }
+        .pd-actions a { padding:9px 12px; text-decoration:none; border-radius:6px; color:#fff; font-size:14px; }
+         .pd-actions .dash { background:#007bff; }
+         .pd-actions .logout { background:#dc3545; }
++        @media (max-width:420px){
++            .profile-dropdown {
++                right: 8px;
++                left: auto;
++                top: 56px;
++                min-width: 200px;
++                max-width: calc(100% - 32px);
++            }
++        }
+    </style>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid container-lg">
+        <a class="navbar-brand fw-bold fs-4" href="{{ url_for('index') }}">R.D.GURAV Music Classes</a>
+        <button
+            class="navbar-toggler border-0"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navMenu"
+            aria-controls="navMenu"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav mx-auto align-items-center mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="#our-courses">Courses</a></li>
+                <li class="nav-item"><a class="nav-link" href="#instructors">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Resources</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Programs</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Support</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Teach With Us</a></li>
+            </ul>
+
+            <div class="d-flex">
+                {% if current_user %}
+                <!-- When logged in: show profile (Login/Signup hidden) -->
+                <div class="profile-widget">
+                    <button id="profileBtn" class="profile-circle" aria-haspopup="true" aria-expanded="false" title="Account">
+                        {% set parts = (current_user.name or '').split() %}
+                        {{ ((parts[0][0] if parts|length > 0 else '') + (parts[1][0] if parts|length > 1 else '')) | upper }}
+                    </button>
+                    <div id="profileDropdown" class="profile-dropdown" role="dialog" aria-label="Account menu">
+                        <div class="pd-name">{{ current_user.name }}</div>
+                        <div class="pd-email">{{ current_user.email }}</div>
+                        <div class="pd-actions">
+                            <a class="dash" href="{{ url_for('dashboard') }}">Go to Dashboard</a>
+                            <a class="logout" href="{{ url_for('logout') }}">Logout</a>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <!-- When not logged in: show Login / Signup -->
+                <a href="{{ url_for('login') }}" class="btn btn-spardha-login me-2">Login</a>
+                <a href="{{ url_for('signup') }}" class="btn btn-spardha-trial">SignUp</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section starting -->
+<section id="hero">
+  <div class="content container">
+    <h1>Learn Music, Express Yourself</h1>
+    <p>Join RD Gurav Music Academy & master Piano, Guitar,Ukelele Vocal</p>
+    <a href="Enroll.html" class="btn btn-primary" id="enrollBtn">Enroll Now</a>
+  </div>
+</section>
+
+<section id="hero-spardha">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <h1>Graded Music Certifications</h1>
+                <ul class="list-unstyled">
+                    <li>Internationally Recognised</li>
+                    <li>Milestones in your Musical Journey (Beginner To Advanced)</li>
+                    <li>Open to all with no age restrictions</li>
+                </ul>
+
+                <a href="Enroll.html" class="btn btn-lg btn-spardha-trial my-3">Book a free trial</a>
+
+                </div>
+            <div class="col-lg-5 hero-image">
+                <img src="/static/images/welcome.png" class="img-fluid rounded-4 shadow-lg" alt="Student playing Guitar">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="why-grades" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title-spardha">Why Grades Certifications</h2>
+        <div class="row g-4 text-center">
+            <div class="col-md-4 col-sm-6">
+                <div class="grade-benefit-card">
+                    <i class="fas fa-globe-americas"></i>
+                    <p>Internationally Recognised</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="grade-benefit-card">
+                    <i class="fas fa-chart-line"></i>
+                    <p>Milestones in your Musical Journey</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="grade-benefit-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <p>Builds Rigour & Practice Discipline</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="grade-benefit-card">
+                    <i class="fas fa-microphone-alt"></i>
+                    <p>Removes Performance Fear</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-banner mt-5">
+            <div class="container">
+                <h3>Join R.D.GURAV Music Classes To Develop Your Music skills.</h3> <div class="row justify-content-center">
+                    <div class="col-md-4 col-6 stat-item">
+                        <span>40K</span> Students Trained
+                    </div>
+                    <div class="col-md-4 col-6 stat-item">
+                        <span>10,00,000+</span> Live Classes Delivered
+                    </div>
+                    <div class="col-md-4 col-12 stat-item mt-3 mt-md-0">
+                        <span>4.8/5</span> Global Rating
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Courses Section -->
+<section id="our-courses">
+  <div class="container py-5">
+    <h2 class="text-center mb-4">Our Courses</h2>
+
+    <!-- Instrument Tabs -->
+    <div class="text-center mb-4 instrument-tabs">
+      <button class="btn btn-outline-primary active" onclick="showCourse(event,'acoustic')">Acoustic Guitar</button>
+      <button class="btn btn-outline-primary" onclick="showCourse(event,'electric')">Electric Guitar</button>
+      <button class="btn btn-outline-primary" onclick="showCourse(event,'keyboard')">Keyboard</button>
+      <button class="btn btn-outline-primary" onclick="showCourse(event,'ukulele')">Ukulele</button>
+    </div>
+
+    <!-- Course Display -->
+    <div class="row align-items-center g-5 course-content-box">
+      <div class="col-lg-7">
+        <div class="course-text" id="course-text">
+          <h3 class="fw-bold mb-3">Acoustic Guitar</h3>
+          <p class="lead text-muted mb-4">
+            Whether your child wants to play their favourite songs or become the next rockstar, our professionally certified and friendly teachers will guide them from learning the basics like scales and chords to achieving international certifications.
+          </p>
+                    <a id="seeCoursesBtn" href="/syllabus/guitar.html" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">See Courses</a>
+        </div>
+      </div>
+      <div class="col-lg-5 text-center">
+        <img
+          id="course-img"
+          src="/static/images/acoustic_guitar.png"
+          class="img-fluid rounded-4 shadow-lg transition-all"
+          alt="Acoustic Guitar"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="instructors">
+    <div class="container">
+        <h2 class="section-title-spardha">Meet Our Talented Instructors</h2>
+        <p class="text-center text-muted mb-5">R.D.GURAV brings to you experienced instructors who will help you master your craft.</p> <div class="row g-4 justify-content-center">
+            <div class="col-md-4 col-sm-6">
+                <div class="instructor-card">
+                    <img src="{{ url_for('static', filename='images/dattatray.png') }}" alt="Dattatray B Gurav" class="img-fluid">
+                    <h5>Dattatray B Gurav</h5>
+                    <p class="mb-1">Vocal Instructor</p>
+                    <span class="badge rounded-pill">12+ Years Experience</span>
+                    <div class="mt-2 text-muted small">
+                        <i class="fas fa-star text-warning"></i> 4.9 Rating
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="instructor-card">
+                    <img src="{{ url_for('static', filename='images/shivraj.png') }}" alt="Shivraj D Gurav" class="img-fluid">
+                    <h5>Shivraj D Gurav</h5>
+                    <p class="mb-1">Guitar Instructor</p>
+                    <span class="badge rounded-pill">9+ Years Experience</span>
+                    <div class="mt-2 text-muted small">
+                        <i class="fas fa-star text-warning"></i> 4.7 Rating
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="instructor-card">
+                    <img src="{{ url_for('static', filename='images/ritik.png') }}" alt="Ritik D Gurav" class="img-fluid">
+                    <h5>Ritik D Gurav</h5>
+                    <p class="mb-1">Keyboard & Piano</p>
+                    <span class="badge rounded-pill">15+ Years Experience</span>
+                    <div class="mt-2 text-muted small">
+                        <i class="fas fa-star text-warning"></i> 5.0 Rating
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-spardha-login">View All Instructors</a>
+        </div>
+
+    </div>
+</section>
+
+
+<section id="gallery" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title-spardha">Gallery</h2>
+
+        <div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+            <div class="carousel-inner rounded shadow">
+                <div class="carousel-item active">
+                    <img src="{{ url_for('static', filename='images/classA.jpg') }}" class="d-block w-100" alt="Keyboard">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='images/classB.jpg') }}" class="d-block w-100" alt="Music Class 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='images/classC.jpg') }}" class="d-block w-100" alt="Music Class 2">
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+
+<section id="videos" class="py-5">
+    <div class="container">
+        <h2 class="section-title-spardha">Our Videos</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" title="YouTube video 1" allowfullscreen></iframe>
+            </div>
+            <div class="col-md-6">
+                <iframe src="https://www.youtube.com/embed/D3VnE2ntRYE?si=5HFbJWt5pG96BH2B" title="YouTube video 2" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-md-start mb-3 mb-md-0">
+                <p class="mb-0">&copy; 2025 R.D.GURAV Music Classes. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Course tab + page scripts (unchanged) -->
+<script>
+function showCourse(event, type) {
+    const title = document.querySelector("#course-text h3");
+    const desc = document.querySelector("#course-text p");
+    const img = document.querySelector("#course-img");
+
+    // Reset active button
+    document.querySelectorAll(".instrument-tabs button").forEach(btn => btn.classList.remove("active"));
+    event.target.classList.add("active");
+
+    const data = {
+        acoustic: {
+            title: "Acoustic Guitar",
+            desc: "Whether your child wants to play their favourite songs or become the next rockstar, our certified and friendly teachers will guide them from basics to international certifications.",
+            img: "/static/images/acoustic_guitar.png",
+            syllabus: "guitar"
+        },
+        electric: {
+            title: "Electric Guitar",
+            desc: "From classic rock riffs to modern solos — learn with expert instructors guiding you through chords, scales, and certifications.",
+            img: "/static/images/electric_guitar.png",
+            syllabus: "electric"
+        },
+        keyboard: {
+            title: "Electronic Keyboard",
+            desc: "Perfect for beginners! Build a solid foundation in melody, rhythm, and harmony while exploring classical and pop music.",
+            img: "/static/images/key.png",
+            syllabus: "piano"
+        },
+        ukulele: {
+            title: "Ukulele",
+            desc: "The ukulele is fun, compact, and easy to learn — perfect for beginners to gain rhythm, chords, and performance confidence.",
+            img: "/static/images/ukulele.png",
+            syllabus: "ukulele"
+        }
+    };
+
+    title.textContent = data[type].title;
+    desc.textContent = data[type].desc;
+    img.style.opacity = 0;
+
+    const seeBtn = document.querySelector('#seeCoursesBtn');
+    if (seeBtn && data[type] && data[type].syllabus) {
+        seeBtn.href = `/syllabus/${data[type].syllabus}.html`;
+    }
+
+    setTimeout(() => {
+        img.src = data[type].img;
+        img.alt = data[type].title;
+        img.style.opacity = 1;
+    }, 200);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const seeBtn = document.querySelector('#seeCoursesBtn');
+    if (seeBtn) {
+        seeBtn.href = '/syllabus/guitar.html';
+    }
+});
+</script>
+
+<!-- Profile dropdown toggle (vanilla JS) -->
+<script>
+  (function(){
+    var btn = document.getElementById('profileBtn');
+    var dd = document.getElementById('profileDropdown');
+    if(!btn || !dd) return;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      dd.classList.toggle('show');
+    });
+    document.addEventListener('click', function(){ dd.classList.remove('show'); });
+    document.addEventListener('keydown', function(ev){ if(ev.key === 'Escape'){ dd.classList.remove('show'); }});
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Piano Course Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <style>
+    body { background: #f3f4f6; }
+    .navbar { background: linear-gradient(90deg, #198754, #20c997); }
+    .navbar-brand { font-weight: bold; color: #fff !important; letter-spacing: 1px; }
+    .logout-btn { background-color: #dc3545; color: white; border: none; border-radius: 30px; padding: 6px 16px; transition: 0.3s; }
+    .logout-btn:hover { background-color: #b02a37; }
+    .sidebar { height: calc(100vh - 56px); overflow-y: auto; position: sticky; top: 56px; background: #fff; padding: 1rem; border-radius: 0.5rem; }
+    .video-item { cursor: pointer; transition: all 0.2s ease; padding: 0.75rem 1rem; border-radius: 0.5rem; margin-bottom: 0.5rem; background-color: #f9fafb; display: flex; justify-content: space-between; align-items: center; }
+    .video-item:hover:not(.locked) { background-color: #e5e7eb; transform: translateX(4px); }
+    .locked { opacity: 0.6; cursor: not-allowed; background-color: #e5e7eb !important; }
+    .current { border-left: 4px solid #198754; font-weight: bold; background-color: #d1f3e0 !important; }
+    .progress { height: 1rem; border-radius: 9999px; }
+    .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem; }
+    .video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 0.5rem; }
+    .bg-green-light { background-color: #d1fae5 !important; }
+    a.disabled-link { pointer-events: none; opacity: 0.5; }
+    .course-details { margin-bottom: 1rem; }
+    .card-rounded { border-radius: 0.5rem; }
+    .tab-content { margin-top: 1rem; }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">🎹 R.D. Gurav Music Classes</a>
+    <button class="btn logout-btn" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container-fluid mt-3">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-12 sidebar shadow-sm">
+      <h4 class="fw-bold mb-4 text-primary">Piano Course Syllabus</h4>
+      <ul class="list-unstyled" id="videoList">
+        {% if videos %}
+          {% for video in videos %}
+          <li class="video-item {% if loop.index0 > 0 %}locked{% endif %}" data-index="{{ loop.index0 }}">
+            🎹 {{ video.title }} <i class="bi {% if loop.index0 > 0 %}bi-lock-fill{% else %}bi-play-circle{% endif %}"></i>
+          </li>
+          {% endfor %}
+        {% else %}
+          <li class="video-item" data-index="0">
+            🎹 Introduction to Piano <i class="bi bi-play-circle"></i>
+          </li>
+          <li class="video-item locked" data-index="1">
+            🎹 Basic Scales <i class="bi bi-lock-fill"></i>
+          </li>
+          <li class="video-item locked" data-index="2">
+            🎼 Chords & Harmony <i class="bi bi-lock-fill"></i>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 col-12 p-3">
+      <!-- Course Details Card -->
+      <div class="course-details card shadow-sm p-3 mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h3 class="fw-bold mb-1">🎹 Piano Course</h3>
+            <p class="mb-0">Instructor: <b>{{ student.get('instructor', 'R.D. Gurav') }}</b></p>
+            <p class="mb-0">Duration: <b>4 Weeks</b> | Lessons: <b>{{ videos|length if videos else 3 }}</b></p>
+          </div>
+          <div>
+            <h5 class="text-success">Welcome, {{ student.name }}!</h5>
+            <p class="mb-0">Current Course: <b>Piano Course</b></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Player -->
+      <div id="videoPlayer" class="video-container shadow-sm mb-3">
+        <video id="player" controls playsinline>
+          <source id="videoSource" src="" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="card shadow-sm p-3 mb-3">
+        <h5 class="fw-semibold mb-3">Your Course Progress</h5>
+        <div class="progress mb-2">
+          <div id="progressBar" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+        </div>
+        <p id="progressText" class="mb-0 text-muted">0% Complete</p>
+      </div>
+
+      <!-- Tabs -->
+      <ul class="nav nav-tabs" id="courseTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">Description</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources" type="button" role="tab">Resources</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="certificate-tab" data-bs-toggle="tab" data-bs-target="#certificate" type="button" role="tab">Certificate</button>
+        </li>
+      </ul>
+      <div class="tab-content card-rounded shadow-sm p-3">
+        <div class="tab-pane fade show active" id="description" role="tabpanel">
+          <p>This Piano Beginner Course is designed to teach you the fundamentals of playing piano, including chords, scales, and basic music theory. Perfect for beginners who want to start their musical journey.</p>
+        </div>
+        <div class="tab-pane fade" id="resources" role="tabpanel">
+          <ul id="resourceList" class="list-group"></ul>
+        </div>
+        <div class="tab-pane fade" id="certificate" role="tabpanel">
+          <a id="certButton" href="{{ url_for('certificate_index') }}" class="btn btn-success disabled-link w-100">
+            <i class="bi bi-award-fill"></i> Download Certificate
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Videos from backend - course-specific videos from static/videos/
+  const videos = {{ videos|tojson|safe }};
+  
+  // If no videos from backend, use fallback
+  if (!videos || videos.length === 0) {
+    videos = [
+      { title: "Introduction to Piano", src: "/static/videos/piano/intro.mp4", watched: false },
+      { title: "Basic Piano Techniques", src: "/static/videos/piano/basic.mp4", watched: false },
+      { title: "Piano Practice", src: "/static/videos/piano/practice.mp4", watched: false }
+    ];
+  }
+
+  const lessonResources = [
+    { lesson: "Introduction to Piano", resources: [{name: "Intro Slides PDF", url: "#"}, {name: "Scales Sheet", url: "#"}] },
+    { lesson: "Basic Piano Chords", resources: [{name: "Chords Practice PDF", url: "#"}, {name: "Scales Practice", url: "#"}] },
+    { lesson: "Piano Practice & Techniques", resources: [{name: "Techniques PDF", url: "#"}] }
+  ];
+
+  const player = document.getElementById('player');
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  const certButton = document.getElementById('certButton');
+  const resourceList = document.getElementById('resourceList');
+  const videoSource = document.getElementById('videoSource');
+
+  const watchedVideos = JSON.parse(localStorage.getItem('watchedVideos')) || [];
+
+  // Mark videos as watched if they're in localStorage
+  if (videos && videos.length > 0) {
+    videos.forEach(video => {
+      if (watchedVideos.includes(video.src)) video.watched = true;
+    });
+  }
+
+  let currentIndex = 0;
+  
+  // Initialize player with first video
+  if (videos && videos.length > 0) {
+    videoSource.src = videos[currentIndex].src;
+    player.load(); // Reload video element with new source
+    
+    // Add error handling for initial video load
+    player.addEventListener('error', (e) => {
+      console.error('Error loading initial video:', e);
+    }, { once: true });
+  }
+
+  // Function to play a video by index
+  function playVideo(index) {
+    if (!videos || !videos[index]) return;
+    
+    currentIndex = index;
+    
+    // Stop current video
+    player.pause();
+    player.currentTime = 0;
+    
+    // Set new video source
+    videoSource.src = videos[index].src;
+    player.load();
+    
+    // Play when video is ready
+    const playWhenReady = () => {
+      player.play().catch(err => {
+        console.error('Error playing video:', err);
+      });
+    };
+    
+    // Check if video is already loaded
+    if (player.readyState >= 2) {
+      playWhenReady();
+    } else {
+      // Wait for video to load
+      const onCanPlay = () => playWhenReady();
+      player.addEventListener('canplay', onCanPlay, { once: true });
+      player.addEventListener('loadeddata', onCanPlay, { once: true });
+    }
+    
+    // Error handling
+    player.addEventListener('error', (e) => {
+      console.error('Video loading error for:', videos[index].title);
+      console.error('Video source:', videos[index].src);
+      console.error('Player error:', player.error);
+    }, { once: true });
+    
+    refreshAllTabs();
+  }
+
+  // Setup click handlers using event delegation
+  document.getElementById('videoList')?.addEventListener('click', (e) => {
+    const item = e.target.closest('.video-item');
+    if (!item) return;
+    
+    const index = parseInt(item.getAttribute('data-index'));
+    if (isNaN(index)) return;
+    
+    // Check if video is accessible (first video or previous is watched)
+    if (index === 0 || (videos[index - 1] && videos[index - 1].watched)) {
+      playVideo(index);
+    }
+  });
+
+  function refreshAllTabs() {
+    updateVideoAccess();
+    updateProgress();
+    updateResourcesTab();
+    highlightCurrentLesson();
+  }
+
+  function updateVideoAccess() {
+    if (!videos || videos.length === 0) return;
+    // Re-query video items to get fresh DOM references
+    const videoItems = document.querySelectorAll('.video-item');
+    videoItems.forEach((item, index) => {
+      item.classList.remove('current', 'locked');
+      
+      // First video is always unlocked
+      if (index === 0) {
+        item.classList.remove('locked');
+        // Update icon
+        const icon = item.querySelector('i');
+        if (icon) {
+          icon.className = 'bi bi-play-circle';
+        }
+      } 
+      // Other videos unlock if previous video is watched
+      else if (videos[index - 1] && videos[index - 1].watched) {
+        item.classList.remove('locked');
+        // Update icon to play icon when unlocked
+        const icon = item.querySelector('i');
+        if (icon) {
+          icon.className = 'bi bi-play-circle';
+        }
+      } 
+      // Lock videos that haven't been unlocked yet
+      else {
+        item.classList.add('locked');
+        // Update icon to lock icon when locked
+        const icon = item.querySelector('i');
+        if (icon) {
+          icon.className = 'bi bi-lock-fill';
+        }
+      }
+      
+      // Mark watched videos
+      if (videos[index] && videos[index].watched) {
+        item.classList.add('bg-green-light');
+      }
+    });
+  }
+
+  function highlightCurrentLesson() {
+    const videoItems = document.querySelectorAll('.video-item');
+    videoItems.forEach((item, index) => {
+      if (index === currentIndex) {
+        item.classList.add('current');
+      } else {
+        item.classList.remove('current');
+      }
+    });
+  }
+
+  function updateProgress() {
+    if (!videos || videos.length === 0) return;
+    const watchedCount = videos.filter(v => v.watched).length;
+    const progress = (watchedCount / videos.length) * 100;
+    progressBar.style.width = `${progress}%`;
+    progressText.textContent = `${Math.round(progress)}% Complete`;
+    if (watchedCount === videos.length) {
+      certButton.classList.remove('disabled-link');
+    } else {
+      certButton.classList.add('disabled-link');
+    }
+  }
+
+  function updateResourcesTab() {
+    resourceList.innerHTML = "";
+    if (!videos || videos.length === 0) return;
+    lessonResources.forEach((lesson, idx) => {
+      if (idx >= videos.length) return;
+      lesson.resources.forEach(res => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+        const btnClass = videos[idx] && videos[idx].watched ? 'btn-primary' : 'btn-secondary disabled';
+        li.innerHTML = `${res.name} <a href="${res.url}" class="btn btn-sm ${btnClass}" ${videos[idx] && videos[idx].watched ? '' : 'tabindex="-1" aria-disabled="true"'}>Download</a>`;
+        resourceList.appendChild(li);
+      });
+    });
+  }
+
+  player.addEventListener('ended', () => {
+    if (videos && videos[currentIndex]) {
+      // Mark current video as watched
+      if (!videos[currentIndex].watched) {
+        videos[currentIndex].watched = true;
+        const watchedSrcs = JSON.parse(localStorage.getItem('watchedVideos')) || [];
+        if (!watchedSrcs.includes(videos[currentIndex].src)) {
+          watchedSrcs.push(videos[currentIndex].src);
+          localStorage.setItem('watchedVideos', JSON.stringify(watchedSrcs));
+        }
+      }
+      
+      // Update UI to unlock next video (but don't refresh tabs yet, playVideo will do it)
+      updateVideoAccess();
+      updateProgress();
+      highlightCurrentLesson();
+      
+      // Auto-play next video if available and unlocked
+      if (currentIndex + 1 < videos.length && videos[currentIndex].watched) {
+        // Small delay to ensure DOM is updated
+        setTimeout(() => {
+          playVideo(currentIndex + 1);
+        }, 100);
+      } else {
+        // If no next video, refresh all tabs
+        refreshAllTabs();
+      }
+    }
+  });
+
+
+  function logout() {
+    localStorage.clear();
+    window.location.href = "{{ url_for('logout') }}";
+  }
+
+  // Initialize the dashboard
+  if (videos && videos.length > 0) {
+    refreshAllTabs();
+  }
+</script>
+</body>
+</html>

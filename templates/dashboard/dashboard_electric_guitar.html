@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Electric Guitar Course Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <style>
+    body { background: #f3f4f6; }
+    .navbar { background: linear-gradient(90deg, #d6336c, #fd7e14); }
+    .navbar-brand { font-weight: bold; color: #fff !important; letter-spacing: 1px; }
+    .logout-btn { background-color: #dc3545; color: white; border: none; border-radius: 30px; padding: 6px 16px; transition: 0.3s; }
+    .logout-btn:hover { background-color: #b02a37; }
+    .sidebar { height: calc(100vh - 56px); overflow-y: auto; position: sticky; top: 56px; background: #fff; padding: 1rem; border-radius: 0.5rem; }
+    .video-item { cursor: pointer; transition: all 0.2s ease; padding: 0.75rem 1rem; border-radius: 0.5rem; margin-bottom: 0.5rem; background-color: #f9fafb; display: flex; justify-content: space-between; align-items: center; }
+    .video-item:hover:not(.locked) { background-color: #e5e7eb; transform: translateX(4px); }
+    .locked { opacity: 0.6; cursor: not-allowed; background-color: #e5e7eb !important; }
+    .current { border-left: 4px solid #d6336c; font-weight: bold; background-color: #ffe0e6 !important; }
+    .progress { height: 1rem; border-radius: 9999px; }
+    .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem; }
+    .video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 0.5rem; }
+    .bg-green-light { background-color: #d1fae5 !important; }
+    a.disabled-link { pointer-events: none; opacity: 0.5; }
+    .course-details { margin-bottom: 1rem; }
+    .card-rounded { border-radius: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">🎸 R.D. Gurav Music Classes</a>
+    <button class="btn logout-btn" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container-fluid mt-3">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-12 sidebar shadow-sm">
+      <h4 class="fw-bold mb-4 text-primary">Electric Guitar Course Syllabus</h4>
+      <ul class="list-unstyled" id="videoList">
+        {% if videos %}
+          {% for video in videos %}
+          <li class="video-item {% if loop.index0 > 0 %}locked{% endif %}" data-index="{{ loop.index0 }}">
+            🎸 {{ video.title }} <i class="bi {% if loop.index0 > 0 %}bi-lock-fill{% else %}bi-play-circle{% endif %}"></i>
+          </li>
+          {% endfor %}
+        {% else %}
+          <li class="video-item" data-index="0">
+            🎸 Introduction to Electric Guitar <i class="bi bi-play-circle"></i>
+          </li>
+          <li class="video-item locked" data-index="1">
+            🎸 Power Chords & Riffs <i class="bi bi-lock-fill"></i>
+          </li>
+          <li class="video-item locked" data-index="2">
+            🎼 Solo Techniques <i class="bi bi-lock-fill"></i>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 col-12 p-3">
+      <!-- Course Details Card -->
+      <div class="course-details card shadow-sm p-3 mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h3 class="fw-bold mb-1">🎸 Electric Guitar Course</h3>
+            <p class="mb-0">Instructor: <b>{{ student.get('instructor', 'R.D. Gurav') }}</b></p>
+            <p class="mb-0">Duration: <b>4 Weeks</b> | Lessons: <b>{{ videos|length if videos else 3 }}</b></p>
+          </div>
+          <div>
+            <h5 class="text-success">Welcome, {{ student.name }}!</h5>
+            <p class="mb-0">Current Course: <b>{{ student.current_course }}</b></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Player -->
+      <div id="videoPlayer" class="video-container shadow-sm mb-3">
+        <video id="player" controls playsinline>
+          <source id="videoSource" src="" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="card shadow-sm p-3 mb-3">
+        <h5 class="fw-semibold mb-3">Your Course Progress</h5>
+        <div class="progress mb-2">
+          <div id="progressBar" class="progress-bar bg-warning" role="progressbar" style="width: 0%"></div>
+        </div>
+        <p id="progressText" class="mb-0 text-muted">0% Complete</p>
+      </div>
+
+      <!-- Tabs -->
+      <ul class="nav nav-tabs" id="courseTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">Description</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources" type="button" role="tab">Resources</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="certificate-tab" data-bs-toggle="tab" data-bs-target="#certificate" type="button" role="tab">Certificate</button>
+        </li>
+      </ul>
+      <div class="tab-content card-rounded shadow-sm p-3">
+        <div class="tab-pane fade show active" id="description" role="tabpanel">
+          <p>This Electric Guitar Course covers fundamentals like power chords, riffs, and solo techniques, perfect for aspiring rockstars!</p>
+        </div>
+        <div class="tab-pane fade" id="resources" role="tabpanel">
+          <ul id="resourceList" class="list-group"></ul>
+        </div>
+        <div class="tab-pane fade" id="certificate" role="tabpanel">
+          <a id="certButton" href="{{ url_for('certificate_index') }}" class="btn btn-warning disabled-link w-100">
+            <i class="bi bi-award-fill"></i> Download Certificate
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Videos from backend - course-specific videos from static/videos/
+  const videos = {{ videos|tojson|safe }};
+  
+  // If no videos from backend, use fallback
+  if (!videos || videos.length === 0) {
+    videos = [
+      { title: "Introduction to Electric Guitar", src: "/static/videos/electric_guitar/intro.mp4", watched: false },
+      { title: "Power Chords & Riffs", src: "/static/videos/electric_guitar/power_chords.mp4", watched: false },
+      { title: "Solo Techniques", src: "/static/videos/electric_guitar/solo.mp4", watched: false }
+    ];
+  }
+
+  const lessonResources = [
+    { lesson: "Introduction to Electric Guitar", resources: [{name: "Intro Slides PDF", url: "#"}, {name: "Riffs Sheet", url: "#"}] },
+    { lesson: "Power Chords & Riffs", resources: [{name: "Chords Practice PDF", url: "#"}, {name: "Riffs Practice", url: "#"}] },
+    { lesson: "Solo Techniques", resources: [{name: "Solo Techniques PDF", url: "#"}] }
+  ];
+
+  const player = document.getElementById('player');
+  const videoItems = document.querySelectorAll('.video-item');
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  const certButton = document.getElementById('certButton');
+  const resourceList = document.getElementById('resourceList');
+
+  const watchedVideos = JSON.parse(localStorage.getItem('watchedVideos')) || [];
+
+  videos.forEach(video => {
+    if (watchedVideos.includes(video.src)) video.watched = true;
+  });
+
+  let currentIndex = 0;
+  player.src = videos[currentIndex].src;
+
+  function refreshAllTabs() {
+    updateVideoAccess();
+    updateProgress();
+    updateResourcesTab();
+    highlightCurrentLesson();
+  }
+
+  function updateVideoAccess() {
+    videoItems.forEach((item, index) => {
+      item.classList.remove('current');
+      if (index === 0 || videos[index - 1].watched) {
+        item.classList.remove('locked');
+      } else {
+        item.classList.add('locked');
+      }
+      if (videos[index].watched) {
+        item.classList.add('bg-green-light');
+      }
+    });
+  }
+
+  function highlightCurrentLesson() {
+    videoItems.forEach((item, index) => {
+      if (index === currentIndex) {
+        item.classList.add('current');
+      } else {
+        item.classList.remove('current');
+      }
+    });
+  }
+
+  function updateProgress() {
+    const watchedCount = videos.filter(v => v.watched).length;
+    const progress = (watchedCount / videos.length) * 100;
+    progressBar.style.width = `${progress}%`;
+    progressText.textContent = `${Math.round(progress)}% Complete`;
+    if (watchedCount === videos.length) {
+      certButton.classList.remove('disabled-link');
+    } else {
+      certButton.classList.add('disabled-link');
+    }
+  }
+
+  function updateResourcesTab() {
+    resourceList.innerHTML = "";
+    lessonResources.forEach((lesson, idx) => {
+      lesson.resources.forEach(res => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+        const btnClass = videos[idx].watched ? 'btn-warning' : 'btn-secondary disabled';
+        li.innerHTML = `${res.name} <a href="${res.url}" class="btn btn-sm ${btnClass}" ${videos[idx].watched ? '' : 'tabindex="-1" aria-disabled="true"'}>Download</a>`;
+        resourceList.appendChild(li);
+      });
+    });
+  }
+
+  player.addEventListener('ended', () => {
+    if (!videos[currentIndex].watched) {
+      videos[currentIndex].watched = true;
+      localStorage.setItem('watchedVideos', JSON.stringify(videos.map(v => v.src).filter(src => src === videos[currentIndex].src)));
+    }
+    refreshAllTabs();
+    if (currentIndex + 1 < videos.length && !document.querySelectorAll('.video-item')[currentIndex + 1].classList.contains('locked')) {
+      currentIndex++;
+      player.src = videos[currentIndex].src;
+      player.play();
+    }
+  });
+
+  document.querySelectorAll('.video-item').forEach((item, index) => {
+    item.addEventListener('click', () => {
+      if (item.classList.contains('locked')) return;
+      currentIndex = index;
+      player.src = videos[index].src;
+      player.play();
+      refreshAllTabs();
+    });
+  });
+
+  function logout() {
+    localStorage.clear();
+    window.location.href = "{{ url_for('logout') }}";
+  }
+
+  refreshAllTabs();
+</script>
+</body>
+</html>

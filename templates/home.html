@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Piano Masterclass: Module 1 | RD Gurav Music Academy (Glass Aesthetic)</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet" />
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <style>
+    /* VARIABLES: Using Dark Theme for High Contrast Glass Effect */
+    :root {
+      --bg-dark: #0f0f0f; /* Deep Black Background */
+      --deep-blue: #1a1a2e; /* Card Background */
+      --vibrant-cyan: #00e0ff; /* Neon Accent Color */
+      --shadow-cyan: rgba(0, 224, 255, 0.4);
+      --soft-white: #e0e0e0;
+      --success-green: #39ff14; /* Neon Green Success */
+      --shadow-green: rgba(57, 255, 20, 0.5);
+    }
+
+    /* Global Background and Text */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #101010 0%, #2c3e50 100%); /* Gradient Dark Background */
+      color: var(--soft-white);
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: rgba(15, 15, 15, 0.9) !important; /* Slightly transparent dark */
+      backdrop-filter: blur(10px); /* Light blur for Glassmorphism */
+    }
+    .navbar-brand, .navbar-text, .nav-link {
+        color: var(--vibrant-cyan) !important;
+        text-shadow: 0 0 5px var(--shadow-cyan);
+    }
+    .nav-link:hover {
+        color: white !important;
+        text-shadow: 0 0 8px var(--shadow-cyan);
+    }
+
+    /* Glass Card Effect */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08); /* Transparent White */
+      border-radius: 18px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(12px); /* Key Glass Effect */
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 20px;
+    }
+
+    /* Headings and Progress */
+    h1, h2 {
+        color: var(--soft-white) !important;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+    }
+
+    .progress-bar-container {
+        /* No Background needed, use the glass-card effect */
+        padding: 15px 20px;
+        margin-bottom: 20px;
+    }
+    .progress {
+        background: rgba(255, 255, 255, 0.15);
+        height: 14px;
+    }
+    .progress-bar {
+        background-color: var(--success-green);
+        box-shadow: 0 0 10px var(--shadow-green);
+    }
+    #progressText {
+        color: var(--success-green);
+        text-shadow: 0 0 5px var(--shadow-green);
+    }
+
+    /* Video Player */
+    .video-player-container {
+        border-radius: 18px;
+        box-shadow: 0 0 30px var(--shadow-cyan); /* Neon Shadow */
+    }
+
+    /* Syllabus Sidebar (Now Glass Card) */
+    .syllabus-sidebar {
+      background: rgba(15, 15, 15, 0.5); /* Darker transparent background */
+      color: var(--soft-white);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      height: calc(100vh - 120px);
+      top: 80px;
+    }
+
+    .sidebar-header {
+        background: rgba(0, 0, 0, 0.3);
+        font-weight: 700;
+        color: var(--vibrant-cyan);
+        text-shadow: 0 0 5px var(--shadow-cyan);
+    }
+
+    /* Accordion Overrides */
+    .accordion-button {
+      background-color: transparent !important;
+      color: var(--soft-white) !important;
+      border: none !important;
+      transition: background 0.3s;
+    }
+    .accordion-button:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    .accordion-body {
+      background-color: transparent;
+      padding: 0;
+    }
+    .accordion-item {
+        background-color: transparent !important;
+        border: none !important;
+    }
+    .accordion-button:not(.collapsed) {
+        color: var(--vibrant-cyan) !important;
+        box-shadow: none !important;
+    }
+
+    /* Lesson List Styling */
+    .lesson-item {
+      color: var(--soft-white);
+      border-left: 5px solid transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: background-color 0.2s, border-left-color 0.2s;
+    }
+    .lesson-item:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    .lesson-item.active {
+      background-color: rgba(0, 224, 255, 0.15);
+      border-left-color: var(--vibrant-cyan);
+      color: var(--vibrant-cyan);
+      font-weight: 600;
+    }
+    .lesson-item.watched .status-icon {
+      color: var(--success-green);
+    }
+    .status-icon {
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Action/Notes Area */
+    .action-notes-card {
+        background: rgba(255, 255, 255, 0.08); /* Glass Card */
+        border-radius: 18px;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    .action-notes-card .nav-link.active {
+        background-color: var(--vibrant-cyan);
+        color: var(--bg-dark) !important;
+        font-weight: 700;
+        border-color: var(--vibrant-cyan) !important;
+        text-shadow: none;
+    }
+    .action-notes-card .nav-link {
+        color: var(--vibrant-cyan);
+        font-weight: 600;
+    }
+    .action-notes-card .nav-tabs {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Neon Buttons */
+    #nextLessonBtn {
+        background-color: var(--vibrant-cyan);
+        color: var(--bg-dark);
+        border: none;
+        box-shadow: 0 0 10px var(--shadow-cyan);
+    }
+    #nextLessonBtn:hover {
+        background-color: #00b3cc;
+        box-shadow: 0 0 15px var(--shadow-cyan);
+    }
+    .btn-success {
+        background-color: var(--success-green) !important;
+        color: var(--bg-dark) !important;
+        box-shadow: 0 0 10px var(--shadow-green) !important;
+    }
+    .btn-success:hover {
+        background-color: #31e514 !important;
+        box-shadow: 0 0 15px var(--shadow-green) !important;
+    }
+
+    /* Badges */
+    .badge-unlocked {
+        background-color: var(--success-green) !important;
+        color: var(--bg-dark) !important;
+        animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(57, 255, 20, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(57, 255, 20, 0); }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top shadow navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="index.html">RD Gurav Music Academy</a>
+    <span class="navbar-text ms-3 d-none d-sm-block">
+        | Piano Masterclass
+    </span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars" style="color: var(--vibrant-cyan);"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item"><a class="nav-link" href="index.html#classes">All Courses</a></li>
+        <li class="nav-item ms-3">
+          <a href="#" class="btn btn-outline-light btn-sm" style="color: var(--vibrant-cyan); border-color: var(--vibrant-cyan);">My Profile</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid course-container">
+  <div class="row">
+    <div class="col-12">
+      <div class="progress-bar-container glass-card d-flex align-items-center justify-content-between">
+        <div class="w-75 me-3">
+          <div class="progress" style="height: 14px;">
+            <div id="courseProgressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+        <p class="mb-0 fw-bold"><span id="progressText">0% Complete</span></p>
+      </div>
+      <h1 id="videoTitle" class="mb-4 display-6 fw-bolder text-start">Lesson 1: Introduction to the Keyboard</h1>
+    </div>
+  </div>
+
+  <div class="row g-4">
+
+    <div class="col-lg-8">
+
+      <div class="video-player-container mb-4">
+        <iframe
+          id="courseVideoPlayer"
+          src="https://www.youtube.com/embed/ScMzIvxBSi4?enablejsapi=1"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <div class="action-notes-card p-0">
+        <ul class="nav nav-tabs" id="lessonTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#description-content" type="button" role="tab">Lesson Notes</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources-content" type="button" role="tab">Resources</button>
+          </li>
+          <li class="nav-item ms-auto" role="presentation">
+              <button id="nextLessonBtn" class="btn btn-primary btn-sm rounded-pill" disabled><i class="fas fa-forward me-2"></i> Next Lesson</button>
+          </li>
+        </ul>
+        <div class="tab-content p-4" id="lessonTabsContent">
+          <div class="tab-pane fade show active" id="description-content" role="tabpanel">
+            <p id="videoDescription" class="lead fs-6" style="color: var(--soft-white);"></p>
+          </div>
+          <div class="tab-pane fade" id="resources-content" role="tabpanel">
+            <h5 class="fw-bold" style="color: var(--vibrant-cyan);">Downloads:</h5>
+            <a href="#" class="btn btn-outline-light btn-sm me-2 mb-2" style="color: var(--vibrant-cyan); border-color: var(--vibrant-cyan);"><i class="fas fa-file-pdf me-2"></i> Keyboard Layout Chart (PDF)</a>
+            <a href="#" class="btn btn-outline-light btn-sm mb-2" style="color: var(--vibrant-cyan); border-color: var(--vibrant-cyan);"><i class="fas fa-music me-2"></i> Beginner Exercise Sheet (MIDI)</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-4">
+      <div class="syllabus-sidebar card p-0">
+        <div class="sidebar-header d-flex justify-content-between align-items-center p-3">
+            COURSE CONTENT
+            <span class="badge rounded-pill bg-dark" id="moduleBadge">Module 1: Fundamentals</span>
+        </div>
+
+        <div class="accordion" id="syllabusAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <i class="fas fa-book me-2"></i> Module 1: The Basics
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#syllabusAccordion">
+              <div class="accordion-body p-0">
+                <div id="lessonsList">
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <i class="fas fa-lock me-2"></i> Module 2: Scales & Chords
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#syllabusAccordion">
+              <div class="accordion-body">
+                <p class="text-muted small p-3 mb-0">Complete Module 1 to unlock this content.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 text-center border-top border-secondary mt-auto" style="border-top-color: rgba(255, 255, 255, 0.1) !important;">
+            <span id="completionBadge" class="badge rounded-pill bg-secondary">
+                <i class="fas fa-trophy me-2"></i> Module Badge: Locked
+            </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // 1. Data Structure for Lessons (Same as previous version)
+  const lessons = [
+    { id: 1, title: 'Introduction to the Keyboard', videoId: 'ScMzIvxBSi4', description: 'This introductory lesson covers the basic layout of the piano keyboard, identifying the white and black keys, and understanding octave groups. Get ready for your first notes!', watched: false },
+    { id: 2, title: 'The Staff and Treble Clef', videoId: 'D3VnE2ntRYE', description: 'Learn the fundamentals of sheet music: the five lines and four spaces of the staff, and how the Treble Clef determines note names.', watched: false },
+    { id: 3, title: 'Finger Numbers and Posture', videoId: 'E_nC1i2Hj-Y', description: 'Proper hand position and finger numbering are essential for technique. We break down the correct posture to avoid strain and build speed.', watched: false },
+    { id: 4, title: 'Playing C Major Scale (Part 1)', videoId: 'uJ9585R2-9A', description: 'Start playing your first scale! This lesson focuses on the right-hand technique for the C Major scale without the thumb-tuck.', watched: false },
+    { id: 5, title: 'Basic Rhythm: Quarter Notes', videoId: '2J4rW9XJ_pE', description: 'Understand basic musical timing, focusing on quarter notes and how to count them correctly.', watched: false },
+    { id: 6, title: 'Module 1 Quiz & Review', videoId: '4i903d6d0kI', description: 'A comprehensive review of all concepts covered in Module 1. Time to test your knowledge!', watched: false }
+  ];
+
+  const iframe = document.getElementById('courseVideoPlayer');
+  const lessonsList = document.getElementById('lessonsList');
+  const progressBar = document.getElementById('courseProgressBar');
+  const progressText = document.getElementById('progressText');
+  const nextLessonBtn = document.getElementById('nextLessonBtn');
+  const completionBadge = document.getElementById('completionBadge');
+
+  let currentLessonIndex = 0;
+  let player;
+
+  // 2. Load the YouTube Iframe API
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('courseVideoPlayer', {
+      events: {
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  // 3. Sequential Playback Logic
+  function onPlayerStateChange(event) {
+    // State 0 is 'ended'
+    if (event.data === 0) {
+      markLessonAsWatched(currentLessonIndex);
+      updateProgress();
+
+      const nextIndex = currentLessonIndex + 1;
+      if (nextIndex < lessons.length) {
+        // Enable next button
+        nextLessonBtn.disabled = false;
+        nextLessonBtn.classList.remove('btn-primary');
+        nextLessonBtn.classList.add('btn-success', 'badge-unlocked');
+        nextLessonBtn.innerHTML = '<i class="fas fa-forward me-2"></i> Go to Next Lesson';
+      } else {
+        // Course Finished Logic
+        alert("Congratulations! You have completed Module 1!");
+        nextLessonBtn.disabled = true;
+      }
+    } else if (event.data === 1) {
+        // State 1 is 'playing'
+        nextLessonBtn.disabled = true; // Disable button while video is running
+        nextLessonBtn.classList.remove('btn-success', 'badge-unlocked');
+        nextLessonBtn.classList.add('btn-primary');
+        nextLessonBtn.innerHTML = '<i class="fas fa-forward me-2"></i> Next Lesson';
+    }
+  }
+
+  // 4. Function to Load a Lesson
+  function loadLesson(index) {
+    if (index < 0 || index >= lessons.length) return;
+
+    currentLessonIndex = index;
+    const lesson = lessons[index];
+
+    // Update Video Player
+    const newSrc = `https://www.youtube.com/embed/${lesson.videoId}?enablejsapi=1`;
+    iframe.src = newSrc;
+
+    // Update Titles and Description
+    document.getElementById('videoTitle').textContent = `Lesson ${lesson.id}: ${lesson.title}`;
+    document.getElementById('videoDescription').textContent = lesson.description;
+
+    // Update Sidebar Active State
+    document.querySelectorAll('.lesson-item').forEach((item, i) => {
+      item.classList.remove('active');
+      if (i === index) {
+        item.classList.add('active');
+      }
+    });
+
+    // Re-initialize the YT Player object after changing the src
+    if (window.YT && window.YT.Player) {
+        player = new YT.Player('courseVideoPlayer', {
+            events: { 'onStateChange': onPlayerStateChange }
+        });
+    }
+
+    // Reset Next Button
+    nextLessonBtn.disabled = true;
+    nextLessonBtn.innerHTML = '<i class="fas fa-forward me-2"></i> Next Lesson';
+
+    // Scroll the sidebar to keep the active lesson visible
+    lessonsList.children[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // 5. Function to Mark Lesson as Watched and Update Data
+  function markLessonAsWatched(index) {
+      lessons[index].watched = true;
+      const item = lessonsList.children[index];
+      if (item) {
+          item.classList.add('watched');
+      }
+  }
+
+  // 6. Function to Update Progress Bar
+  function updateProgress() {
+      const watchedCount = lessons.filter(l => l.watched).length;
+      const totalLessons = lessons.length;
+      const percentage = Math.round((watchedCount / totalLessons) * 100);
+
+      progressBar.style.width = percentage + '%';
+      progressBar.setAttribute('aria-valuenow', percentage);
+      progressText.textContent = `${percentage}% Complete (${watchedCount}/${totalLessons} Lessons)`;
+
+      if (percentage === 100) {
+          completionBadge.classList.remove('bg-secondary');
+          completionBadge.classList.add('badge-unlocked');
+          completionBadge.innerHTML = '<i class="fas fa-certificate me-2"></i> Module Badge: UNLOCKED!';
+          document.getElementById('collapseTwo').innerHTML = '<p class="text-success small p-3 mb-0">Module 2 is now available!</p>';
+      }
+  }
+
+  // 7. Generate Sidebar HTML
+  function renderSyllabus() {
+    lessonsList.innerHTML = '';
+    lessons.forEach((lesson, index) => {
+      const item = document.createElement('div');
+      item.className = `lesson-item ${lesson.watched ? 'watched' : ''}`;
+      item.setAttribute('data-index', index);
+
+      item.innerHTML = `
+        <span class="lesson-title">${lesson.id}. ${lesson.title}</span>
+        <i class="fas fa-check-circle status-icon"></i>
+      `;
+
+      item.addEventListener('click', () => loadLesson(index));
+      lessonsList.appendChild(item);
+    });
+
+    // Setup Next Lesson Button Action
+    nextLessonBtn.addEventListener('click', () => {
+        loadLesson(currentLessonIndex + 1);
+    });
+
+    // Load the first lesson and initial progress
+    loadLesson(0);
+    updateProgress();
+  }
+
+  // 8. Initialize
+  // Load the YouTube API script asynchronously
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  window.onload = renderSyllabus;
+
+</script>
+
+</body>
+</html>
