@@ -54,9 +54,6 @@ This application has been migrated from MySQL to Supabase for database managemen
 ## Environment Variables
 
 The application uses the following Supabase configuration:
-- SUPABASE_URL: https://siolenykcgnnthwjongt.supabase.co
-- SUPABASE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpb2xlbnlrY2dubnRod2pvbmd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI3NDYyNzEsImV4cCI6MjA3ODMyMjI3MX0.DES4jyP4UDwTzqGnns_kouhhKdmFk87a-CVHhHsNQFI
-
 ## Directory Structure
 - `app.py`: Main application entry point
 - `templates/`: HTML templates including:
